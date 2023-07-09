@@ -19,7 +19,6 @@ class CalorieTracker {
   this._meals.push(meal);
   this._totalCalories += meal.calories;
   Storage.updateTotalCalories(this._totalCalories);
-
   this._displayNewMeal(meal);
   this._render();
  }
@@ -28,17 +27,16 @@ class CalorieTracker {
   this._workouts.push(workout);
   this._totalCalories -= workout.calories;
   Storage.updateTotalCalories(this._totalCalories);
-
   this._displayNewWorkout(workout);
   this._render();
  }
 
  removeMeal(id) {
   const index = this._meals.findIndex((meal) => meal.id === id);
-
   if (index !== -1) {
    const meal = this._meals[index];
    this._totalCalories -= meal.calories;
+   Storage.updateTotalCalories(this._totalCalories);
    this._meals.splice(index, 1);
    this._render();
   }
@@ -46,10 +44,10 @@ class CalorieTracker {
 
  removeWorkout(id) {
   const index = this._workouts.findIndex((workout) => workout.id === id);
-
   if (index !== -1) {
    const workout = this._workouts[index];
    this._totalCalories += workout.calories;
+   Storage.updateTotalCalories(this._totalCalories);
    this._workouts.splice(index, 1);
    this._render();
   }
@@ -104,7 +102,6 @@ class CalorieTracker {
   const progressEl = document.getElementById('calorie-progress');
   const remaining = this._calorieLimit - this._totalCalories;
   caloriesRemainingEl.innerHTML = remaining;
-
   if (remaining <= 0) {
    caloriesRemainingEl.parentElement.parentElement.classList.remove('bg-light');
    caloriesRemainingEl.parentElement.parentElement.classList.add('bg-danger');
@@ -171,7 +168,6 @@ class CalorieTracker {
   </div>
 </div>
   `;
-
   workoutsEl.appendChild(workoutEl);
  }
 
